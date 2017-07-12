@@ -89,7 +89,7 @@ _LazyMan.prototype.sleepFirst = function(time) {
   return this;
 }
 
-window.LazyMan = function(name) {
+var LazyMan = function(name) {
   return new _LazyMan(name);
 }
 
@@ -101,6 +101,54 @@ window.LazyMan = function(name) {
 
 
 ```
+class _LazyMan {
+  constructor(name) {
+    this.tasks = [];
+    this.defaultOptions = {
+      name: 'lazy man',
+      time: 10,
+      food: 'nothing'
+    };
+
+    this.tasks.push(() => {
+      console.log(`Hi, I'm ${name || this.defaultOptions.name}, I'm so lazy...`);
+      this.next();
+    });
+
+    setTimeout(() => this.next(), 0);
+  }
+
+  next() {
+    const task = this.tasks.shift();
+    task && task();
+  }
+
+  eat(food = this.defaultOptions.food) {
+    this.tasks.push(() => {
+      console.log(`eating ${food}...`);
+      this.next();
+    })
+    return this;
+  }
+
+  sleep(time = this.defaultOptions.time) {
+    this.tasks.push(() => void setTimeout(() => {
+      console.log(`wake me up after ${time} seconds...`);
+      this.next();
+    }, time * 1000));
+    return this;
+  }
+
+  sleepFirst(time = this.defaultOptions.time) {
+    this.tasks.unshift(() => void setTimeout(() => {
+      console.log(`aha, sleep for ${time}  seconds...`);
+      this.next();
+    }, time * 1000));
+    return this;
+  }
+}
+
+const LazyMan = name => new _LazyMan(name);
 
 ```
 

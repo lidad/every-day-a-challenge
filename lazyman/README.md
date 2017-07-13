@@ -28,7 +28,6 @@ Lazyman('Sam').eat('shit').sleepFirst(10).eat('shit');
 基本版的懒逼基于es5实现，网上的代码一大坨，这里给出一个实现：
 
 
-
 ```
 function _LazyMan(name) {
   this.tasks = [];
@@ -54,6 +53,11 @@ _LazyMan.prototype.next = function() {
   var task = this.tasks.shift();
   task && task();
 }
+```
+
+为lazy man添加行为
+
+```
 
 _LazyMan.prototype.eat = function(food) {
   var _this = this;
@@ -80,7 +84,7 @@ _LazyMan.prototype.sleep = function(time) {
 _LazyMan.prototype.sleepFirst = function(time) {
   var _this = this;
   var lTime = time || _this.defaultOptions.time;
-  _this.tasks.unshift(function() {
+  _this.tasks.unshift(function() {//注意此处是将事件从列表前部插进去的
     setTimeout(function() {
       console.log("aha, sleep for " + lTime + " seconds...");
       _this.next();
@@ -88,7 +92,9 @@ _LazyMan.prototype.sleepFirst = function(time) {
   })
   return this;
 }
-
+```
+返回构造函数
+```
 var LazyMan = function(name) {
   return new _LazyMan(name);
 }
@@ -97,9 +103,14 @@ var LazyMan = function(name) {
 
 #### 进阶版
 
-进阶版主要由es6编写，以下为实现：
+进阶版主要由es6编写
 
+- 使用es6 class
+- next方法换做async await来处理
+- lazy man的行为使用promise
+- promise中的决议使用do表达式
 
+写出构造函数
 ```
 class _LazyMan {
   constructor(name) {
@@ -118,39 +129,52 @@ class _LazyMan {
     setTimeout(() => this.next(), 0);
   }
 
-  next() {
+  async next() {
     const task = this.tasks.shift();
-    task && task();
-  }
-
-  eat(food = this.defaultOptions.food) {
-    this.tasks.push(() => {
-      console.log(`eating ${food}...`);
-      this.next();
-    })
-    return this;
-  }
-
-  sleep(time = this.defaultOptions.time) {
-    this.tasks.push(() => void setTimeout(() => {
-      console.log(`wake me up after ${time} seconds...`);
-      this.next();
-    }, time * 1000));
-    return this;
-  }
-
-  sleepFirst(time = this.defaultOptions.time) {
-    this.tasks.unshift(() => void setTimeout(() => {
-      console.log(`aha, sleep for ${time}  seconds...`);
-      this.next();
-    }, time * 1000));
-    return this;
+    task && await task();
   }
 }
+```
 
+lazy man的行为
+```
+eat(food = this.defaultOptions.food) {
+  this.tasks.push(() => Promise.resolve(do {
+    console.log(`eating ${food}...`);
+    this.next();
+  }))
+  return this;
+}
+
+sleep(time = this.defaultOptions.time) {
+  this.tasks.push(() => new Promise((resolve, reject) => {
+    setTimeout(() => resolve(do {
+      console.log(`wake me up after ${time} seconds...`);
+      this.next();
+    }), time * 1000);
+  }))
+  return this;
+}
+
+sleepFirst(time = this.defaultOptions.time) {
+  this.tasks.unshift(() => new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(do {
+        console.log(`aha, sleep for ${time} seconds...`);
+        this.next();
+      })
+    }, time * 1000);
+  }))
+  return this;
+}
+```
+
+返回构造函数的调用
+```
 const LazyMan = name => new _LazyMan(name);
 
 ```
 
+#### 超级进阶版
 
-
+超级进阶版使用了es7的decorator来为lazy man来添加行为

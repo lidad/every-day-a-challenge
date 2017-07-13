@@ -1,4 +1,4 @@
-### 今天我们来一发懒逼，学名lazyMan
+## 今天我们来一发懒逼，学名lazyMan
 
 什么是懒逼，懒逼是这样：
 
@@ -19,11 +19,11 @@ Lazyman('Sam').eat('shit').sleepFirst(10).eat('shit');
 
 ```
 
-#### 对于懒逼，有以下几点：
+### 对于懒逼，有以下几点：
 - 懒逼的行为可以链式调用，所以在调用后必须返回实例
 - 对象的内部要维护一个懒逼的行为队列，每次懒逼要干什么就出队列执行
 
-#### 基本版
+### 基本版
 
 基本版的懒逼基于es5实现，网上的代码一大坨，这里给出一个实现：
 
@@ -101,7 +101,7 @@ var LazyMan = function(name) {
 
 ```
 
-#### 进阶版
+### 进阶版
 
 进阶版主要由es6编写
 
@@ -133,6 +133,9 @@ class _LazyMan {
     const task = this.tasks.shift();
     task && await task();
   }
+
+  //...lazy man的行为
+  //
 }
 ```
 
@@ -175,6 +178,6 @@ const LazyMan = name => new _LazyMan(name);
 
 ```
 
-#### 超级进阶版
+### 超级进阶版
 
 超级进阶版使用了es7的decorator来为lazy man来添加行为

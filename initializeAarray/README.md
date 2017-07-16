@@ -16,16 +16,16 @@ arr //[1,2,3]
 虽然看起来很简单，但毫不夸张，很多来面试的同学面对这道题都没有给出很好的解决(⊙﹏⊙)
 ***
 
-### 走起来！
+## 走起来！
 
 分析一下题目
 - 首先是要为Array添加属性，很多同学想都不想直接就Array.proyotype.initArr...
 - 要求不用loop，那么map，reduce（脑路清奇也可以递归....）
 
-考察的只是点包括：
+考察的知识点包括：
 - Object.defineProperty()
-- 数组的API
 - Array的了解程度
+- Array的API
 
 先给出一个标准的答案：
 ```
@@ -35,19 +35,19 @@ Object.defineProperty(Array, 'initArr', {
 })
 ```
 
-#### 分析一下具体实现
+### 分析一下具体实现
 
-##### 使用Object.defineProperty()定义属性，并在descriptor将writable置为false防止修改
+#### 使用Object.defineProperty()定义属性，并在descriptor将writable置为false防止修改
 > Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。   
 
 使用Object.defineProperty()将initArr直接定义在Array上，而不是为Array.proyotype添加。   
 需要稍加注意的是Object.defineProperty()的用法   
 
-##### Array.apply(null, {length: len})返回一个长度为len的数组
+#### Array.apply(null, {length: len})返回一个长度为len的数组
 
 这里先要说一下Array(len)与Array.apply(null, {length: len})的区别   
 Array(len)即为new Array(len)，它返回了一个长度为len的**空**的数组   
-要注意的是，这个元素数组是空的，并不是undefined，这个数组也不能使用数组的map() API进行操作
+要注意的是，这个数组元素是**空**的，并不是undefined，这个数组也不能使用数组的map()进行操作
 ```
 //chrome下
 const testArr = Array(3)
@@ -66,11 +66,11 @@ testArr.map(item=>console.log(item))
 // undefined
 ```
 
-##### 使用map()返回一个从1到len的数组
+#### 使用map()返回一个从1到len的数组
 
-这里在没有什么好说的了，要注意的是map()接收的函数中第一个参数为当前的数组元素，第二个参数为当前元素在数组中的下标   
+这里就没有什么好说的了，要注意的是map()接收的函数中第一个参数为当前的数组元素，第二个参数为当前元素在数组中的下标   
 
 
 
-题目不是很难，但考察的JS知识点也比较有深度   
-希望大家能够细细思考并拓展一下
+题目不是很难，但考察的了面试者在平时的编码中是否有深入思考过   
+希望大家能够消化掉这个题目并在题目中拓展一下自己的思维

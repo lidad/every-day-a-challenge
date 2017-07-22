@@ -40,3 +40,5 @@ Function.prototype.bind || Object.defineProperty(Function.prototype, 'bind', {
 ### 分析一下
 
 #### Object.defineProperty()
+
+因为bind()在定义中是不可遍历的属性，使用defineProperty将其descriptor的enumerable置为false

@@ -36,3 +36,7 @@ Function.prototype.bind || Object.defineProperty(Function.prototype, 'bind', {
   enumerable: false
 })
 ```
+
+### 分析一下
+
+#### Object.defineProperty()

@@ -62,23 +62,25 @@ const bound = function(...args) {
 return bound;
 ```   
 
-##### 使用fn定义了当前的被调用函数   
+1. **使用fn定义了当前的被调用函数**   
 ```
 const fn = this;
 ```
-##### 使用apply()改变fn的上下文this
-apply()不仅改变了this，还实现了柯里化
+2. **使用apply()改变fn的上下文this**   
+
+  apply()不仅改变了this，还实现了柯里化
 ```
 fn.apply(context, [
   ...curryArgs,
   ...args
 ])//注意此处的两个解构
 ```
-##### 返回bound
-要注意的是，bound定义没有使用箭头函数而使用了function，这是因为**箭头函数不能作为构造器**使用new 来调用！   
+3. **返回bound**   
+
+      要注意的是，bound定义没有使用箭头函数而使用了function，这是因为**箭头函数不能作为构造器**使用new 来调用！   
 
 
-#### noop()及其prototype
+#### noop及其prototype
 ```
 //...
 const noop = function() {};

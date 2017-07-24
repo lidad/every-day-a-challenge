@@ -68,7 +68,7 @@ const fn = this;
 ```
 2. **使用apply()改变fn的上下文this**   
 
-  apply()不仅改变了this，还实现了柯里化
+    apply()不仅改变了this，还实现了柯里化
 ```
 fn.apply(context, [
   ...curryArgs,
@@ -77,7 +77,7 @@ fn.apply(context, [
 ```
 3. **返回bound**   
 
-  要注意的是，bound定义没有使用箭头函数而使用了function，这是因为**箭头函数不能作为构造器**使用new 来调用！   
+    要注意的是，bound定义没有使用箭头函数而使用了function，这是因为**箭头函数不能作为构造器**使用new 来调用！   
 
 
 #### noop及其prototype

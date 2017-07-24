@@ -63,13 +63,13 @@ return bound;
 ```   
 
 1. **使用fn定义了当前的被调用函数**   
-```
+    ```
 const fn = this;
 ```
 2. **使用apply()改变fn的上下文this**   
 
     apply()不仅改变了this，还实现了柯里化
-```
+    ```
 fn.apply(context, [
   ...curryArgs,
   ...args

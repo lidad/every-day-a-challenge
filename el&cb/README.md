@@ -48,7 +48,7 @@ new Promise((resolve, reject) => {
   console.log(3);
 })
 ```
-之后```then()```的fulfilled中打印了5
+之后```then()```的fulfilled中打印了4
 ```
 then(() => {
   console.log(4);
@@ -59,7 +59,9 @@ then(() => {
 console.log(5);
 ```
 
-那么，为什么会出现以上那样的结果呢？这就涉及到了引擎的event loop
+那么，为什么会出现以上那样的结果呢？  
+
+这就涉及到了引擎的event loop
 
 ### event loop
 
@@ -67,19 +69,21 @@ console.log(5);
 这里就V8的event loop简单说明一下   
 
 V8中维护了两个事件队列，分别为**macrotask**和**mincrotask**   
-之所以说是要说是队列，是因为这两个task都是先进先出的   
+之所以说是要说是队列，是因为这两个task都是**先进先出**的   
 
-引擎从**macrotask**中取出一个事件来执行。这个事件执行结束会检查**mincotask**并执行   
+引擎会从**macrotask**中取出一个事件来执行。这个事件执行结束后检查**microtask**并执行  
+ 
 以上这个过程称为一个tick   
 
-- 对于setTimeout来说，它是**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是setTimeout并不精准的原因
-- 对于promise来说，他会将决议的结果塞入mincrotask，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因
+#### setTimeout与promise
+- 对于setTimeout来说，它**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是setTimeout并不精准的原因。
+- 对于promise来说，他会将决议的结果塞入**mincrotask**，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因。
 
 #### 回到上面的场景
 
 计时器将```console.log(2)```塞进了macrotask   
 
-promise**立即决议**，决议的结果fulfilled将```console.log(4)```塞入了mincrotask   
+promise**立即决议**，决议的结果fulfilled中的```console.log(4)```被塞入了microtask   
 
 
 于是，当前的tick中包含了

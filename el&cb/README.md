@@ -68,7 +68,7 @@ console.log(5);
 关于引擎的event loop，我之前有写过一篇[文章](http://www.dadel.live/2017/05/26/js%E5%BC%95%E6%93%8E%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E4%B8%80%E4%BA%9B%E9%A2%98%E5%A4%96%E8%AF%9D/)，感兴趣的话可以去瞅瞅   
 这里就V8的event loop简单说明一下   
 
-V8中维护了两个事件队列，分别为**macrotask**和**mincrotask**   
+V8中维护了两个事件队列，分别为**macrotask**和**microtask**   
 之所以说是要说是队列，是因为这两个task都是**先进先出**的   
 
 引擎会从**macrotask**中取出一个事件来执行。这个事件执行结束后检查**microtask**并执行  
@@ -77,7 +77,7 @@ V8中维护了两个事件队列，分别为**macrotask**和**mincrotask**
 
 #### setTimeout与promise
 - 对于setTimeout来说，它**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是setTimeout并不精准的原因。
-- 对于promise来说，他会将决议的结果塞入**mincrotask**，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因。
+- 对于promise来说，他会将决议的结果塞入**microtask**，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因。
 
 #### 回到上面的场景
 
@@ -92,7 +92,7 @@ console.log(1);
 console.log(3);
 console.log(5);
 ```
-与mincrotask中的
+与microtask中的
 ```
 console.log(4);
 ```

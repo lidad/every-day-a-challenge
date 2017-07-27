@@ -29,8 +29,8 @@ console.log(5);
 2
 ```
 
-我们来把代码捋一遍，看看引擎在执行的时候做了什么。 
-  
+我们来把代码捋一遍，看看引擎在执行的时候做了什么。
+
 首先打印了1，没什么疑问
 ```
 console.log(1);
@@ -64,4 +64,35 @@ console.log(5);
 ### event loop
 
 关于引擎的event loop，我之前有写过一篇[文章](http://www.dadel.live/2017/05/26/js%E5%BC%95%E6%93%8E%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E4%B8%80%E4%BA%9B%E9%A2%98%E5%A4%96%E8%AF%9D/)，感兴趣的话可以去瞅瞅   
-这里就V8的event loop简单说明一下
+这里就V8的event loop简单说明一下   
+
+V8中维护了两个事件队列，分别为**macrotask**和**mincrotask**   
+之所以说是要说是队列，是因为这两个task都是先进先出的   
+
+引擎从**macrotask**中取出一个事件来执行。这个事件执行结束会检查**mincotask**并执行   
+以上这个过程称为一个tick   
+
+- 对于setTimeout来说，它是**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是setTimeout并不精准的原因
+- 对于promise来说，他会将决议的结果塞入mincrotask，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因
+
+#### 回到上面的场景
+
+计时器将```console.log(2)```塞进了macrotask   
+
+promise**立即决议**，决议的结果fulfilled将```console.log(4)```塞入了mincrotask   
+
+
+于是，当前的tick中包含了
+```
+console.log(1);
+console.log(3);
+console.log(5);
+```
+与mincrotask中的
+```
+console.log(4);
+```
+
+而macrotask中的```console.log(2)```会在下一个tick中执行   
+
+以上，对于执行的结果，有没有豁然开朗呢～

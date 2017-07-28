@@ -75,15 +75,15 @@ V8中维护了两个事件队列，分别为**macrotask**和**microtask**
  
 以上这个过程称为一个tick   
 
-#### setTimeout与promise
-- 对于setTimeout来说，它**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是setTimeout并不精准的原因。
-- 对于promise来说，他会将决议的结果塞入**microtask**，这也是为什么promise决议的结果相对来说比setTimeout的回调会先执行的原因。
+#### ```setTimeout```与```promise```
+- 对于```setTimeout```来说，它**在计时结束的时候将回调塞入macrotask**（请仔细品读这句话）。若当前macrotask中有事件，是轮不到这个回调执行的。这也是```setTimeout```并不精准的原因。
+- 对于```promise```来说，他会将决议的结果塞入**microtask**，这也是为什么```promise```决议的结果相对来说比```setTimeout```的回调会先执行的原因。
 
 #### 回到上面的场景
 
-计时器将```console.log(2)```塞进了macrotask   
+```setTimeout``` 将 ```console.log(2)```塞进了macrotask   
 
-promise**立即决议**，决议的结果fulfilled中的```console.log(4)```被塞入了microtask   
+```promise``` **立即决议**，决议的结果fulfilled中的```console.log(4)```被塞入了microtask   
 
 
 于是，当前的tick中包含了

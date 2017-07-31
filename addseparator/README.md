@@ -4,12 +4,39 @@
 
 大致用例如下：
 ```
-function addSeparator(){
+function addSeparator(num){
 //...  
 }
 
-addSeparator(123456789)//123,456,789
 addSeparator(12345678.90)//12,345,678.90
 ```
 
 最好先想清楚有什么解决方案，看看能不能行得通，然后再动手去写(๑•̀ㅂ•́)و✧
+
+## 走起来
+
+这里采用正则和```repalce()```来给出一种解决方案：
+```
+function addSeparator(num) {
+  return num && num.toString().replace(/(\d)(?=(\d{3})+\.\d{1,2})/g, ($1) => `${$1},`)
+}
+```
+
+关键要理解那一句正则和```relace()```的第二个参数
+
+###  ```repalce()```
+
+>stringObject.replace(regexp/substr, replacement)
+字符串 stringObject 的 replace() 方法执行的是查找并替换的操作。它将在 stringObject 中查找与 regexp 相匹配的子字符串，然后用 replacement 来替换这些子串。如果 regexp 具有全局标志 g，那么 replace() 方法将替换所有匹配的子串。否则，它只替换第一个匹配子串。
+replacement 可以是字符串，也可以是函数。如果它是字符串，那么每个匹配都将由字符串替换。但是 replacement 中的 $ 字符具有特定的含义。如下表所示，它说明从模式匹配得到的字符串将用于替换。
+
+这里主要用到了```relpace```的两个特性   
+
+- ```replace```的第二个参数可以接受一个函数来对匹配的字符串进行
+- ```replace```第二个参数中```$```的特殊含义
+
+说明一些下这个```$```   
+
+```replace```中的```$1, $2, $3...```分别表示与第一个参数中正则表达式所匹配的子表达式（也就是正则中```()```的内容）   
+
+而在上述```addSeparator()```中```replace()```里的```$1```，也就对应正则```/(\d)(?=(\d{3})+\.\d{1,2})/g```中第一个括号里```(\d)```的匹配

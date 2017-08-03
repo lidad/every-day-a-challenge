@@ -9,6 +9,63 @@
 * [event loop与回调的一个小题](el&cb/README.md)
 * [为数字添加千分位分隔符](addseparator/README.md)
 * [闭包与作用域的小题](cl&sc/README.md)
+* [作用域的小题](sc1/README.md)
+* [原型链的小题](prototype1/README.md)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

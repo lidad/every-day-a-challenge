@@ -15,6 +15,15 @@ var name = 'World!';
 
 (function() {
   if (typeof name === 'undefined') {
+    name = 'Jack';
+    console.log('Goodbye ' + name);
+  } else {
+    console.log('Hello ' + name);
+  }
+})();
+
+(function() {
+  if (typeof name === 'undefined') {
     console.log('Goodbye ' + name);
   } else {
     var name = 'Jack';
@@ -31,6 +40,8 @@ var name = 'World!';
 先说一下最后的输出：
 ```
 Goodbye Jack
+Hello World
 Goodbye undefined
 ```
 
+只要你知道变量声明的原理，这道题肯定so easy

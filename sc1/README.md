@@ -128,7 +128,7 @@ var name = 'World!';
 })();
 ```   
 
-所以他的结果是```Goodbye undefined```   
+他的结果是```Goodbye undefined```   
 
 ---
 

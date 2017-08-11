@@ -12,6 +12,14 @@
 * [作用域的小题](sc1/README.md)
 * [原型链的小题](prototype1/README.md)
 * [变量声明的小题](scopes1/README.md)
+* [同时更新页面中的1000个列表，思考？](1000lists/README.md)
+
+
+
+
+
+
+
 
 
 

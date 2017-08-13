@@ -1,4 +1,8 @@
-# 每日一道前端面试题
+# 每日一道前端面试题   
+
+这些题目都不难，更多的是想和大家分享一些自己的思考，对题目的，对js的，对面试的...   
+
+希望能够帮助到您，更希望能够抛砖引玉~
 
 - [lazyMan](https://github.com/lidad/every-day-a-challenge/tree/master/lazyman)   
 - [数组初始化](https://github.com/lidad/every-day-a-challenge/blob/master/initializeAarray)

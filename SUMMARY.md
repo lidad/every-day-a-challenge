@@ -14,3 +14,7 @@
 * [变量声明的小题](scopes1/README.md)
 * [同时更新页面中的1000个列表，思考？](1000lists/README.md)
 * [如何实现一个深拷贝](deepclone/README.md)
+* [大整数加法](bigInitPlus/README.md)
+* [事件处理器](eventHandle/README.md)
+* [函数节流](throttle/README.md)
+* [拖动元素](drag/README.md)

@@ -21,3 +21,42 @@ var bigint2 = new BigInt('1234232453525454546445459914343421536654545454');
 
 console.log(bigint1.plus(bigint2));
 ```
+
+### 走起来~   
+
+```
+var BigInt = function(str) {
+  this.bigInt = str;
+};
+
+BigInt.prototype.plus = function(bigint) {
+  const bigInt = '' + bigint;
+  const { longNumber, shortNumber } = this.bigInt.length >= bigInt.length ? {
+    longNumber: this.bigInt.split(''),
+    shortNumber: bigInt.split('')
+  } : {
+    longNumber: bigInt.split(''),
+    shortNumber: this.bigInt.split('')
+  }
+
+  const { result } = longNumber.reduceRight((tempResult, firstSingleNum) => {
+    const { result, carry } = tempResult;
+    const secondSingleNum = shortNumber.pop() || 0;
+    const tempAddResult = +firstSingleNum + (+secondSingleNum) + carry;
+
+    return {
+      result: tempAddResult % 10 + result,
+      carry: tempAddResult > 9
+    }
+  }, {
+    result: '',
+    carry: 0
+  });
+
+  return result;
+};
+
+BigInt.prototype.toString = function() {
+  return this.bigInt;
+};
+```

@@ -22,7 +22,7 @@ var bigint2 = new BigInt('1234232453525454546445459914343421536654545454');
 console.log(bigint1.plus(bigint2));
 ```
 
-### 走起来~   
+### 走起来！   
 
 ```
 var BigInt = function(str) {

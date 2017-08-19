@@ -35,4 +35,57 @@
  });
  
  emitter.off('*');
+```   
+
+### 走起来！   
+
+```
+function EventEmitter() {
+  this.eventList = [];
+}
+
+
+EventEmitter.prototype.on = function(eventName, callback) {
+  if (!callback) {
+    throw new Error('can not bind an event without a callback!')
+  }
+
+  const eventIndex = this.eventList.findIndex(event => event.eventName === eventName);
+  const eventList = ~eventIndex ? this.eventList[eventIndex].eventList : [];
+  if (eventName === '*' && !eventList.length) {
+    this.eventList.reduce((tempEventList, eventObject) => {
+      tempEventList.push(...eventObject.eventList);
+      return tempEventList;
+    }, eventList);
+  }
+
+  if (~eventList.indexOf(callback)) return;
+  eventList.push(callback);
+  this.eventList[~eventIndex ? eventIndex : this.eventList.length] = {
+    eventName,
+    eventList
+  }
+}
+
+
+EventEmitter.prototype.off = function(eventName, callback) {
+  const eventIndex = this.eventList.findIndex(event => event.eventName === eventName);
+  if (!~eventIndex) return;
+  if (!callback) {
+    this._removeEvent(eventIndex);
+  } else {
+    const eventObject = this.eventList[eventIndex];
+    const eventList = eventObject.eventList.reduce((tempEventList, cb) => tempEventList.concat(cb === callback ? [] : cb), []);
+    eventList.length ? (this.eventList[eventIndex].eventList = eventList) : this._removeEvent(eventIndex)
+  }
+}
+
+EventEmitter.prototype.trigger = function(eventName, cbArgs) {
+  const eventObject = this.eventList.find(event => event.eventName === eventName);
+  eventObject && eventObject.eventList.map(cb => void cb(cbArgs));
+}
+
+EventEmitter.prototype._removeEvent = function(index) {
+  this.eventList.splice(index, 1)
+}
 ```

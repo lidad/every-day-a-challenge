@@ -16,3 +16,70 @@
     // code here
 </script>
 ```
+
+### 走起来！
+
+这里使用es6的```class```来给出一种实现   
+
+对于测试用例中直接写在```<script>```标签中的这种形式也势必会面对浏览器的兼容问题   
+
+但既然题设里没有限制，就暂且先这样写啦
+
+```
+class DragElement {
+  constructor(target) {
+    if (!target) {
+      throw new Error('can not init without an element!')
+    }
+    this.target = target;
+    this.eleLeft = this._getStyle('left');
+    this.eleTop = this._getStyle('top');
+    this.targetHeight = parseInt(this._getStyle('height'));
+    this.targetWidth = parseInt(this._getStyle('width'));
+    this.currentX = 0;
+    this.currentY = 0;
+    this.isDraging = false;
+
+    target.addEventListener('mousedown', (event) => {
+      const e = this._handleEvent(event)
+      this.isDraging = true;
+      this.currentX = e.clientX;
+      this.currentY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', () => {
+      this.isDraging = false;
+      this.eleLeft = this._getStyle('left');
+      this.eleTop = this._getStyle('top');
+    })
+
+    document.addEventListener('mousemove', (e) => {
+      if (this.isDraging) {
+        const e = this._handleEvent(event)
+        const clientX = this._getDis(e.clientX, document.body.clientWidth, this.targetWidth);
+        const clientY = this._getDis(e.clientY, document.body.clientHeight, this.targetHeight);
+        const moveX = clientX - this.currentX
+        const moveY = clientY - this.currentY;
+        this.target.style.left = parseInt(this.eleLeft) + moveX + "px";
+        this.target.style.top = parseInt(this.eleTop) + moveY + "px";
+        return false;
+      }
+    })
+  }
+
+  _handleEvent(event) {
+    return event || window.event;
+  }
+
+  _getStyle(style) {
+    return this.target.currentStyle ? this.target.currentStyle[style] : window.getComputedStyle(this.target, false)[style];
+  }
+
+  _getDis(minDis, maxDis, targetAttr) {
+    return Math.min(Math.max(minDis, targetAttr), maxDis - targetAttr);
+  }
+}
+
+new DragElement(document.querySelector('#container'))
+
+```

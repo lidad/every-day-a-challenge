@@ -16,4 +16,7 @@
 - [作用域与函数参数的小题](https://github.com/lidad/every-day-a-challenge/tree/master/scopes1)
 - [考察原型链的小题](https://github.com/lidad/every-day-a-challenge/tree/master/prototype1)
 - [同时更新1000个列表](https://github.com/lidad/every-day-a-challenge/tree/master/1000lists)
+- [大整数加法](https://github.com/lidad/every-day-a-challenge/tree/master/bigInitPlus)
+
+
 

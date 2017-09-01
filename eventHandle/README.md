@@ -39,7 +39,9 @@
 
 ### 走起来！   
 
-这里采用在对象内部维护一个事件队列的思路   
+这里采用在对象内部维护一个事件队列的思路  
+
+注意对```*```绑定的处理。这里有点小问题，一旦绑定了```*```，之后为其他事件绑定回调的时候无法在绑定到```*```上，算是一个纰漏吧 
 
 以下为具体实现
 
@@ -92,4 +94,41 @@ EventEmitter.prototype.trigger = function(eventName, cbArgs) {
 EventEmitter.prototype._removeEvent = function(index) {
   this.eventList.splice(index, 1)
 }
+```   
+
+构造器的调用只是在其内部初始化了一个事件队列（说是队列不太严谨，队列严格的定义是先进先出的！）  
+
+直接来看原型链上添加的方法   
+
 ```
+EventEmitter.prototype.on = function(eventName, callback) {
+  if (!callback) {
+    throw new Error('can not bind an event without a callback!')
+  }
+
+  const eventIndex = this.eventList.findIndex(event => event.eventName === eventName);
+  const eventList = ~eventIndex ? this.eventList[eventIndex].eventList : [];
+  if (eventName === '*' && !eventList.length) {
+    this.eventList.reduce((tempEventList, eventObject) => {
+      tempEventList.push(...eventObject.eventList);
+      return tempEventList;
+    }, eventList);
+  }
+
+  if (~eventList.indexOf(callback)) return;
+  eventList.push(callback);
+  this.eventList[~eventIndex ? eventIndex : this.eventList.length] = {
+    eventName,
+    eventList
+  }
+}
+```
+
+事件队列中维护的数据结构为
+```
+{
+  事件名<string>,
+  事件对应的回调函数数组<Array<function>>
+}
+```
+这样的一个结构

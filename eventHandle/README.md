@@ -39,6 +39,10 @@
 
 ### 走起来！   
 
+这里采用在对象内部维护一个事件队列的思路   
+
+以下为具体实现
+
 ```
 function EventEmitter() {
   this.eventList = [];

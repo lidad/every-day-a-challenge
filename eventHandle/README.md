@@ -110,14 +110,24 @@ EventEmitter.prototype._removeEvent = function(index) {
 ```
 这样的一个结构   
 
+```on()```方法中，首先判断是否有事件回调   
+
+有事件回调的前提下，在事件队列中找到事件名对应的回调函数列表。如果已经绑定过一个声明的回调函数，那么无需操作，否则将该回调函数添加至事件的回调函数列表中  
+
+注意一下这里对```*```的处理。如果绑定的事件名是“```*```”且没有为其绑定过回调，那么遍历其他事件的回调函数并将其添加进```*```的回调函数列表   
+
+对于绑定事件的处理，除了要思考好数据结构的设计外基本上也没什么难度了   
+
 ```
 EventEmitter.prototype.on = function(eventName, callback) {
+  判断参数中是否有回调函数
   if (!callback) {
     throw new Error('can not bind an event without a callback!')
   }
 
   const eventIndex = this.eventList.findIndex(event => event.eventName === eventName);
   const eventList = ~eventIndex ? this.eventList[eventIndex].eventList : [];
+  //若是注册事件是“*”，则遍历所有事件的回调函数列表并将回调函数注册在“*”上
   if (eventName === '*' && !eventList.length) {
     this.eventList.reduce((tempEventList, eventObject) => {
       tempEventList.push(...eventObject.eventList);
@@ -125,6 +135,7 @@ EventEmitter.prototype.on = function(eventName, callback) {
     }, eventList);
   }
 
+  //若注册过，返回
   if (~eventList.indexOf(callback)) return;
   eventList.push(callback);
   this.eventList[~eventIndex ? eventIndex : this.eventList.length] = {
@@ -134,13 +145,13 @@ EventEmitter.prototype.on = function(eventName, callback) {
 }
 ```
 
-```on()```方法中，首先判断是否有事件回调   
+```off()```先要判断为事件绑定过回调，没有则什么也不做   
 
-有事件回调的前提下，在事件队列中找到事件名对应的回调函数列表。如果已经绑定过一个声明的回调函数，那么无需操作，否则将该回调函数添加至事件的回调函数列表中  
+另外```off```有对于第二个参数传入的不同有不一样的处理方式   
 
-注意一下这里对```*```的处理。如果绑定的事件名是“```*```”且没有为其绑定过回调，那么遍历其他事件的回调函数并将其添加进```*```的回调函数列表   
+若是有第二个参数（回调函数），则在事件的回调函数列表里查找该回调并移除   
 
-对于绑定事件的处理，除了要思考好数据结构的设计外基本上也没什么难度了   
+若是没有第二个参数，表示要移除整个事件，则在对象维护的事件列表中查找该事件并移除   
 
 ```
 EventEmitter.prototype.off = function(eventName, callback) {
@@ -155,13 +166,10 @@ EventEmitter.prototype.off = function(eventName, callback) {
   }
 }
 ```
-```off()```先要判断为事件绑定过回调，没有则什么也不做   
 
-另外```off```有对于第二个参数传入的不同有不一样的处理方式   
+```trigger```只是执行事件注册的相应回调，其接受两个参数，第一个参数为时间名，第二个参数为注册回调的参数   
 
-若是有第二个参数（回调函数），则在事件的回调函数列表里查找该回调并移除   
-
-若是没有第二个参数，表示要移除整个事件，则在对象维护的事件列表中查找该事件并移除   
+它在事件队列中查找相应的回调函数列表并依次执行回调   
 
 ```
 EventEmitter.prototype.trigger = function(eventName, cbArgs) {
@@ -170,14 +178,10 @@ EventEmitter.prototype.trigger = function(eventName, cbArgs) {
 }
 ```
 
-```trigger```只是执行事件注册的相应回调，其接受两个参数，第一个参数为时间名，第二个参数为注册回调的参数   
-
-它在事件队列中查找相应的回调函数列表并依次执行回调   
+```_removeEvent()```是一个私有的方法，用于在事件列表中将指定事件一次性移除   
 
 ```
 EventEmitter.prototype._removeEvent = function(index) {
   this.eventList.splice(index, 1)
 }
 ```
-
-```_removeEvent()```是一个私有的方法，用于在事件列表中将指定事件一次性移除

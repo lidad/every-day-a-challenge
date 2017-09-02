@@ -101,6 +101,15 @@ EventEmitter.prototype._removeEvent = function(index) {
 
 直接来看原型链上添加的方法   
 
+事件队列中维护的数据结构为
+```
+{
+  事件名<string>,
+  事件对应的回调函数数组<Array<function>>
+}
+```
+这样的一个结构   
+
 ```
 EventEmitter.prototype.on = function(eventName, callback) {
   if (!callback) {
@@ -124,15 +133,6 @@ EventEmitter.prototype.on = function(eventName, callback) {
   }
 }
 ```
-
-事件队列中维护的数据结构为
-```
-{
-  事件名<string>,
-  事件对应的回调函数数组<Array<function>>
-}
-```
-这样的一个结构   
 
 ```on()```方法中，首先判断是否有事件回调   
 
@@ -172,7 +172,7 @@ EventEmitter.prototype.trigger = function(eventName, cbArgs) {
 
 ```trigger```只是执行事件注册的相应回调，其接受两个参数，第一个参数为时间名，第二个参数为注册回调的参数   
 
-它在时间队列中查找相应的回掉函数列表并依次执行回调   
+它在事件队列中查找相应的回调函数列表并依次执行回调   
 
 ```
 EventEmitter.prototype._removeEvent = function(index) {
@@ -180,4 +180,4 @@ EventEmitter.prototype._removeEvent = function(index) {
 }
 ```
 
-```_removeEvent()```是一个私有的方法，用于在事件列表中将指定时间一次性移除
+```_removeEvent()```是一个私有的方法，用于在事件列表中将指定事件一次性移除

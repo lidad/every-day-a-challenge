@@ -134,7 +134,7 @@ EventEmitter.prototype.on = function(eventName, callback) {
 ```
 这样的一个结构   
 
-```on```方法中，首先判断是否有事件回调   
+```on()```方法中，首先判断是否有事件回调   
 
 有事件回调的前提下，在事件队列中找到事件名对应的回调函数列表。如果已经绑定过一个声明的回调函数，那么无需操作，否则将该回调函数添加至事件的回调函数列表中  
 
@@ -155,10 +155,29 @@ EventEmitter.prototype.off = function(eventName, callback) {
   }
 }
 ```
-```off```先要判断为事件绑定过回调，没有则什么也不做   
+```off()```先要判断为事件绑定过回调，没有则什么也不做   
 
 另外```off```有对于第二个参数传入的不同有不一样的处理方式   
 
 若是有第二个参数（回调函数），则在事件的回调函数列表里查找该回调并移除   
 
-若是没有第二个参数，表示要移除整个事件，则在对象维护的事件列表中查找该事件并移除
+若是没有第二个参数，表示要移除整个事件，则在对象维护的事件列表中查找该事件并移除   
+
+```
+EventEmitter.prototype.trigger = function(eventName, cbArgs) {
+  const eventObject = this.eventList.find(event => event.eventName === eventName);
+  eventObject && eventObject.eventList.map(cb => void cb(cbArgs));
+}
+```
+
+```trigger```只是执行事件注册的相应回调，其接受两个参数，第一个参数为时间名，第二个参数为注册回调的参数   
+
+它在时间队列中查找相应的回掉函数列表并依次执行回调   
+
+```
+EventEmitter.prototype._removeEvent = function(index) {
+  this.eventList.splice(index, 1)
+}
+```
+
+```_removeEvent()```是一个私有的方法，用于在事件列表中将指定时间一次性移除

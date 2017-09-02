@@ -156,11 +156,15 @@ EventEmitter.prototype.on = function(eventName, callback) {
 ```
 EventEmitter.prototype.off = function(eventName, callback) {
   const eventIndex = this.eventList.findIndex(event => event.eventName === eventName);
+  //没有注册过的事件什么也不做
   if (!~eventIndex) return;
+  
+  //没有回调函数，移除整个事件
   if (!callback) {
     this._removeEvent(eventIndex);
   } else {
     const eventObject = this.eventList[eventIndex];
+    //遍历回调函数列表并移除相应回调
     const eventList = eventObject.eventList.reduce((tempEventList, cb) => tempEventList.concat(cb === callback ? [] : cb), []);
     eventList.length ? (this.eventList[eventIndex].eventList = eventList) : this._removeEvent(eventIndex)
   }
@@ -174,6 +178,7 @@ EventEmitter.prototype.off = function(eventName, callback) {
 ```
 EventEmitter.prototype.trigger = function(eventName, cbArgs) {
   const eventObject = this.eventList.find(event => event.eventName === eventName);
+  //如果有注册事件，遍历其回调函数列表并执行回调
   eventObject && eventObject.eventList.map(cb => void cb(cbArgs));
 }
 ```
@@ -182,6 +187,15 @@ EventEmitter.prototype.trigger = function(eventName, cbArgs) {
 
 ```
 EventEmitter.prototype._removeEvent = function(index) {
+  //直接使用数组的splice()方法移除整个事件
   this.eventList.splice(index, 1)
 }
-```
+```   
+
+---
+
+差不多就是这样了   
+
+有些地方处理的并不是很好，像是```off()```中对回调列表的遍历处理，一旦找到对应事件可以终止遍历   
+
+也希望大家能够多发现这些不足的地方，对你我都是最好的进步方式啦

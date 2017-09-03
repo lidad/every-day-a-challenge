@@ -15,7 +15,7 @@ window.addEventListener('scroll', throttle(func, 50), false);
 
 这里所采用的方案接受三个参数，分别是被节流的函数，节流时间与阈值   
 
-关于阈值接下来会主要说明，先来看一下具体实现   
+关于阈值接下来会说明，先来看一下具体实现   
 
 ```
 function throttle(func, duration, threshold) {
@@ -51,4 +51,6 @@ function throttle(func, duration, threshold) {
 
 如果一个函数总是被节流，其实并不是一个很好的用户体验   
 
-譬如在resize页面时，总是节流，页面没有相应，反而显得有些奇怪了
+譬如在resize页面时，总是节流，页面没有相应，反而显得有些奇怪了   
+
+这时为```throttle()```设置一个阈值，若是被节流的函数再次响应时等于或超过了阈值的时间，那么就让它执行一次，来放宽节流的限制

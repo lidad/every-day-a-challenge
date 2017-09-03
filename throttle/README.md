@@ -9,8 +9,13 @@ function throttle() {
 
 window.addEventListener('scroll', throttle(func, 50), false);
 ```
+这个算是一道很经典的面试题了，和其他面试题不同，他很具有实用价值，来看看   
 
 ### 走起来！   
+
+这里所采用的方案接受三个参数，分别是被节流的函数，节流时间与阈值   
+
+关于阈值接下来会主要说明，先来看一下具体实现   
 
 ```
 function throttle(func, duration, threshold) {
@@ -34,4 +39,10 @@ function throttle(func, duration, threshold) {
     }
   }
 }
-```
+```   
+
+由于函数节流要保存上一次函数执行时的时间点，这里采用了闭包的方法   
+
+```throttle()```方法内部定义了上次执行时间点与```setTimeout()```所返回的时间数据   
+
+而要保存上次函数执行的时间点主要是为了阈值的作用

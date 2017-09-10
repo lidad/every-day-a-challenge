@@ -89,3 +89,33 @@ new DragElement(document.querySelector('#container'))
 监听元素的```mouseover```事件，同时修改元素位置   
 
 注意题目中对于元素移动边界的要求，元素的移动不能超过容器边界。这里在```mouseover```回调事件中就要有所处理
+
+
+先来看一下```DragElement```中的三个私有方法   
+
+```_handleEvent()```来处理事件兼容   
+
+```
+_handleEvent(event) {
+  return event || window.event;
+}
+```  
+
+```_getStyle()```来获得拖动元素的样式  
+
+```
+_getStyle(style) {
+  return this.target.currentStyle ? this.target.currentStyle[style] : window.getComputedStyle(this.target, false)[style];
+}
+```
+
+```_getDis()```处理边界问题   
+
+若是到了左上边界，返回元素的长宽。到了下右边界，返回边界值与元素长款的差   
+
+```
+_getDis(minDis, maxDis, targetAttr) {
+  //minDis代表元素当前的位置，maxDis为边界，targetAttr代表元素长宽
+  return Math.min(Math.max(minDis, targetAttr), maxDis - targetAttr);
+}
+```

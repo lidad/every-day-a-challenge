@@ -83,3 +83,9 @@ class DragElement {
 new DragElement(document.querySelector('#container'))
 
 ```
+
+这里主要是通过修改元素css的```top```和```left```属性来实现位置变化，有一个很关键的条件就是被拖动元素的```position```必须是```absolute```   
+
+监听元素的```mouseover```事件，同时修改元素位置   
+
+注意题目中对于元素移动边界的要求，元素的移动不能超过容器边界。这里在```mouseover```回调事件中就要有所处理

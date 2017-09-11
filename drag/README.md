@@ -118,4 +118,10 @@ _getDis(minDis, maxDis, targetAttr) {
   //minDis代表元素当前的位置，maxDis为边界，targetAttr代表元素长宽
   return Math.min(Math.max(minDis, targetAttr), maxDis - targetAttr);
 }
-```
+```   
+
+整个拖动的相关处理逻辑都在```DragElement```的构造函数```constructor```中   
+
+逻辑很简单，绑定了```mousedown````，```mousevoer```与```mouseup```三个事件   
+
+```mousedown```事件中

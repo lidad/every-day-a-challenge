@@ -122,7 +122,7 @@ _getDis(minDis, maxDis, targetAttr) {
 
 整个拖动的相关处理逻辑都在```DragElement```的构造函数```constructor```中   
 
-逻辑很简单，绑定了```mousedown````，```mousevoer```与```mouseup```三个事件   
+逻辑很简单，绑定了```mousedown```，```mousevoer```与```mouseup```三个事件   
 
 ```mousedown```事件中确定元素开始被拖动，将```isDraging```置为```true```并保存元素当前的位置信息   
 
@@ -145,7 +145,7 @@ this.eleTop = this._getStyle('top');
 this.targetHeight = parseInt(this._getStyle('height'));
 this.targetWidth = parseInt(this._getStyle('width'));
 
-//currentX与currentY保存元素开始拖动时的位置，用来计算需要移动的位置
+//currentX与currentY保存元素开始拖动时的位置，用来计算被拖动时需要移动的位置
 this.currentX = 0;
 this.currentY = 0;
 

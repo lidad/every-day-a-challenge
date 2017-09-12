@@ -111,7 +111,7 @@ _getStyle(style) {
 
 ```_getDis()```处理边界问题   
 
-若是到了左上边界，返回元素的长宽。到了下右边界，返回边界值与元素长款的差   
+**若是到了左上边界，返回元素的长宽。到了下右边界，返回边界值与元素长款的差**   
 
 ```
 _getDis(minDis, maxDis, targetAttr) {
@@ -131,27 +131,43 @@ _getDis(minDis, maxDis, targetAttr) {
 ```mouseup```事件中确定元素拖动结束，将```isDraging```置为```false```  
 
 ```
+//若没有目标元素，则在构造函数中抛出异常
 if (!target) {
    throw new Error('can not init without an element!')
 }
 this.target = target;
+
+//eleLeft与eleTop保存元素被拖动时的位置信息
 this.eleLeft = this._getStyle('left');
 this.eleTop = this._getStyle('top');
+
+//targetHeight与targetWidth是元素的长宽信息，用来处理边界问题
 this.targetHeight = parseInt(this._getStyle('height'));
 this.targetWidth = parseInt(this._getStyle('width'));
+
+//currentX与currentY保存元素开始拖动时的位置，用来计算需要移动的位置
 this.currentX = 0;
 this.currentY = 0;
+
+//isDraging是元素被拖动状态标志。由于mouseover绑定了整个document，需要一个标志在其回调中判断是否需要处理
 this.isDraging = false;
 
+//鼠标在元素上按下，元素开始被拖动
 target.addEventListener('mousedown', (event) => {
+  //处理事件
   const e = this._handleEvent(event)
   this.isDraging = true;
+  
+  //保存开始拖动时的位置信息
   this.currentX = e.clientX;
   this.currentY = e.clientY;
 });
 
+//鼠标在元素上弹起，元素拖动结束
 document.addEventListener('mouseup', () => {
   this.isDraging = false;
+  
+  //保存元素当前的位置，为的是下一次拖动时元素就在此处开始而不会跳动
   this.eleLeft = this._getStyle('left');
   this.eleTop = this._getStyle('top');
 })
@@ -159,10 +175,16 @@ document.addEventListener('mouseup', () => {
 document.addEventListener('mousemove', (e) => {
   if (this.isDraging) {
     const e = this._handleEvent(event)
+    
+    //处理边界问题，返回处理的过鼠标位置
     const clientX = this._getDis(e.clientX, document.body.clientWidth, this.targetWidth);
     const clientY = this._getDis(e.clientY, document.body.clientHeight, this.targetHeight);
+    
+    //计算需要移动的距离
     const moveX = clientX - this.currentX
     const moveY = clientY - this.currentY;
+    
+    //修改元素css进行元素的移动
     this.target.style.left = parseInt(this.eleLeft) + moveX + "px";
     this.target.style.top = parseInt(this.eleTop) + moveY + "px";
     return false;

@@ -124,4 +124,49 @@ _getDis(minDis, maxDis, targetAttr) {
 
 逻辑很简单，绑定了```mousedown````，```mousevoer```与```mouseup```三个事件   
 
-```mousedown```事件中
+```mousedown```事件中确定元素开始被拖动，将```isDraging```置为```true```并保存元素当前的位置信息   
+
+```mousevoer```事件中处理拖动过程中元素的位置变化   
+
+```mouseup```事件中确定元素拖动结束，将```isDraging```置为```false```  
+
+```
+if (!target) {
+   throw new Error('can not init without an element!')
+}
+this.target = target;
+this.eleLeft = this._getStyle('left');
+this.eleTop = this._getStyle('top');
+this.targetHeight = parseInt(this._getStyle('height'));
+this.targetWidth = parseInt(this._getStyle('width'));
+this.currentX = 0;
+this.currentY = 0;
+this.isDraging = false;
+
+target.addEventListener('mousedown', (event) => {
+  const e = this._handleEvent(event)
+  this.isDraging = true;
+  this.currentX = e.clientX;
+  this.currentY = e.clientY;
+});
+
+document.addEventListener('mouseup', () => {
+  this.isDraging = false;
+  this.eleLeft = this._getStyle('left');
+  this.eleTop = this._getStyle('top');
+})
+
+document.addEventListener('mousemove', (e) => {
+  if (this.isDraging) {
+    const e = this._handleEvent(event)
+    const clientX = this._getDis(e.clientX, document.body.clientWidth, this.targetWidth);
+    const clientY = this._getDis(e.clientY, document.body.clientHeight, this.targetHeight);
+    const moveX = clientX - this.currentX
+    const moveY = clientY - this.currentY;
+    this.target.style.left = parseInt(this.eleLeft) + moveX + "px";
+    this.target.style.top = parseInt(this.eleTop) + moveY + "px";
+    return false;
+  }
+})
+``` 
+

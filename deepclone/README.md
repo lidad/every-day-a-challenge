@@ -36,4 +36,33 @@ f.d = 3;
 
 JavaScript的这种机制是一种双刃剑，在引用关系的基础上一些场景下会很方便我们的操作。但如果对其不是很熟悉，就会埋下一些暗坑，有时候代码读过去觉得是好的，跑起来就会出错   
 
-而对于react类库中的pure render来说，官方为我们提供了一个基于浅比较的[pureComponent](https://facebook.github.io/react/docs/react-api.html)，但由于是浅比较，在涉及复杂数据结构深层变化的时候它就GG了。。深拷贝可以解决这个问题，无奈其本身也有性能问题，对于追求高性能的react这也是相悖的（immutable快出来，哈哈）
+而对于react类库中的pure render来说，官方为我们提供了一个基于浅比较的[pureComponent](https://facebook.github.io/react/docs/react-api.html)，但由于是浅比较，在涉及复杂数据结构深层变化的时候它就GG了。。深拷贝可以解决这个问题，无奈其本身也有性能问题，对于追求高性能的react这也是相悖的（immutable快出来，哈哈）   
+
+### 体验一下深拷贝
+
+JavaScript已经为我们提供了一些具有深拷贝性质的API   
+
+比如说想要深拷贝一个数组，```concat()```与```slice()```都可以实现   
+
+```
+var a = [1,2,3];
+var fakeA = a;
+var deepA = a.slice();
+var anotherDeepA= a.concat();
+
+deepA//[1,2,3]
+anotherDeepA//[1,2,3]
+
+deepA === a//false
+anotherDeepA=== a//false
+fakeA === a//true
+
+deepA.push('deepA');
+anotherDeepA.push('otherDeepA');
+fakeA.push('a');
+
+a//[1,2,3,'a'] 
+fakeA//[1,2,3,'a'] 
+deepA//[1,2,3,'deepA']
+anotherDeepA//[1,2,3,'otherDeepA']
+```

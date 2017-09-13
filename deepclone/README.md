@@ -50,19 +50,19 @@ var fakeA = a;
 var deepA = a.slice();
 var anotherDeepA= a.concat();
 
-deepA//[1,2,3]
-anotherDeepA//[1,2,3]
+deepA  //[1,2,3]
+anotherDeepA  //[1,2,3]
 
-deepA === a//false
-anotherDeepA=== a//false
-fakeA === a//true
+deepA === a  //false
+anotherDeepA=== a  //false
+fakeA === a  //true
 
 deepA.push('deepA');
 anotherDeepA.push('otherDeepA');
 fakeA.push('a');
 
-a//[1,2,3,'a'] 
-fakeA//[1,2,3,'a'] 
-deepA//[1,2,3,'deepA']
-anotherDeepA//[1,2,3,'otherDeepA']
+a  //[1,2,3,'a'] 
+fakeA  //[1,2,3,'a'] 
+deepA  //[1,2,3,'deepA']
+anotherDeepA  //[1,2,3,'otherDeepA']
 ```

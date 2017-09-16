@@ -87,4 +87,12 @@ anotherDeepA  //[1,2,3,'otherDeepA']
 function deepClone(initalObj){
   return JSON.parse(JSON.stringify(initalObj));
 }
-```
+```  
+
+通过```JSON```对象提供的序列化与反序列化方法，可以很简单的实现一个对象的深拷贝    
+
+```JSON.stringify()```可以把一个对象序列化为一个JSON串，而```JSON.parse()```可以将一个JSON串反序列化解析为一个对象   
+
+如此一来一往，便返回了一个和原对象具有不同引用的新对象   
+
+需要注意的是，若是原对象中具有循环引用的case这种处理方式就束手无策了

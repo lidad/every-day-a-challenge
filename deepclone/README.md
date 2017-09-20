@@ -109,3 +109,21 @@ function deepClone(initalObj){
 如此一来一往，便返回了一个和原对象完全脱离引用关系的新对象   
 
 需要注意的是，若是原对象中具有循环引用的case这种处理方式就束手无策了   
+
+#### 基于递归的深拷贝
+
+```
+function deepClone(initalObj) {
+  var newObj = initalObj instanceof Array ? [] : {};
+  for (var key in initalObj) {
+    if (initalObj.hasOwnProperty(key)) {
+      newObj[key] = typeof initalObj[key] === 'object' ? deepCopy(initalObj[key]) : initalObj[key];
+    }
+  }
+  return newObj
+}
+```
+
+在对每一个对象属性的递归过程中，其赋值操作避免了对象类型属性的引用    
+
+乍一想好想很复杂，但写出来可以看到还是蛮简单的

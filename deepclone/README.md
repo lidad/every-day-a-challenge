@@ -98,6 +98,10 @@ foo[3]  //{ a: 4 }
 
 ```
 function deepClone(initalObj){
+  if(typeof initalObj !== 'object'){
+    throw new Error('param must be an object!');
+  }
+
   return JSON.parse(JSON.stringify(initalObj));
 }
 ```  
@@ -114,13 +118,17 @@ function deepClone(initalObj){
 
 ```
 function deepClone(initalObj) {
-  var newObj = initalObj instanceof Array ? [] : {};
-  for (var key in initalObj) {
+  if(typeof initalObj !== 'object'){
+    throw new Error('param must be an object!');
+  }
+  
+  const newObj = initalObj instanceof Array ? [] : {};
+  for (let key in initalObj) {
     if (initalObj.hasOwnProperty(key)) {
       newObj[key] = typeof initalObj[key] === 'object' ? deepCopy(initalObj[key]) : initalObj[key];
     }
   }
-  return newObj
+  return newObj;
 }
 ```
 

@@ -18,3 +18,4 @@
 * [事件处理器](eventHandle/README.md)
 * [函数节流](throttle/README.md)
 * [拖动元素](drag/README.md)
+* [this的一个小题](this_1/README.md)

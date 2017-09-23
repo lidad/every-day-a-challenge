@@ -1,7 +1,7 @@
 ## 考察this的一道小题
 
-这道题来源于SegmentFault的一片讲解this的[文章](http://mp.weixin.qq.com/s/haFVIlx-CBNtDCpA3BYr9g)，
-他的考察点很有意思，搬过来搞一下   
+这道题来源于SegmentFault中一篇关于this的[文章](http://mp.weixin.qq.com/s/haFVIlx-CBNtDCpA3BYr9g)。
+考察点很有意思，我就搬过来搞一下   
 
 ```
 function foo(arg) {
@@ -31,13 +31,14 @@ undefined
 
 细读一下这段代码   
 
-首先，引擎在跑这段代码时会经历**变量声明的提升**，形如如下所示：
+首先，引擎在跑这段代码时会经历**变量声明的提升**，形如以下：
 ```
 function foo(arg) {
   this.a = arg;
   return a;
 }
 
+//这里！
 var a;
 var b;
 
@@ -62,7 +63,7 @@ function foo(arg) {
 
 简单说一下，```foo```中this指向的是**调用foo的对象**   
 
-举个例子来说，下面这段代码中，```foo```中```this.a```分别操作了```objA```与```objB```中的```a```
+举个例子，下面这段代码中，```foo```中```this.a```分别操作了```objA```与```objB```中的```a```
 ```
 function foo(arg) {
   this.a = arg;
@@ -87,6 +88,6 @@ objB.a  //3
 
 之前说过，由于变量声明的提升，```a```与```b```在```foo```执行时已经被声明   
 
-因此```foo```中的```this.a```就是之前在window中声明```a```，整段逻辑里foo中的```this.a```与```a```都是这个```a```   
+此时```foo```中的```this.a```为window中声明的```a```，整段逻辑里foo中的```this.a```与```a```都是这个```a```（第二个```a```是由于函数作用域）   
 
 说的有些绕，我们来看看```foo()```执行的时候发生了什么来理一下

@@ -6,7 +6,7 @@
 ```
 function foo(arg) {
   this.a = arg;
-  return a;
+  return this;
 }
 
 var a = foo(1);
@@ -35,7 +35,7 @@ undefined
 ```
 function foo(arg) {
   this.a = arg;
-  return a;
+  return this;
 }
 
 //这里！
@@ -55,7 +55,7 @@ b = foo(10);
 ```
 function foo(arg) {
   this.a = arg;
-  return a;
+  return this;
 }
 ```
 
@@ -90,4 +90,12 @@ objB.a  //3
 
 此时```foo```中的```this.a```为window中声明的```a```，整段逻辑里foo中的```this.a```与```a```都是这个```a```（第二个```a```是由于函数作用域）   
 
-说的有些绕，我们来看看```foo()```执行的时候发生了什么来理一下
+说的有些绕，我们来看看```foo()```执行的时候发生了什么来理一下  
+
+第一个```a = foo(1)```将```a```赋值为1，然后返回```this```赋值给```a```
+
+注意，**此时```a```的值为```window```(或者```global```)**
+
+第二个```b = foo(10)```将```a```赋值为10，然后返回```this```将其赋值给```b```
+
+此时```b```的值为```window```(或者```global```),```a```的值为10

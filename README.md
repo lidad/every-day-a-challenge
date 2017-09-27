@@ -20,6 +20,4 @@
 - [事件处理器](https://github.com/lidad/every-day-a-challenge/tree/master/eventHandle)
 - [函数节流（throttle）](https://github.com/lidad/every-day-a-challenge/tree/master/throttle)
 - [如何实现一个深拷贝](https://github.com/lidad/every-day-a-challenge/tree/master/deepclone)
-
-
-
+- [有关this的一个小题](https://github.com/lidad/every-day-a-challenge/tree/master/this_1)
